@@ -1,7 +1,7 @@
-import Elysia from "elysia"
+import Elysia from 'elysia';
 
-import { createContext } from "../elysia"
-import dashboard from "./dashboard"
-import auth from "./auth"
+import { createContext } from '../elysia';
+import auth from './auth';
+import dashboard from './dashboard';
 
-export default new Elysia().use(createContext).use(dashboard).use(auth)
+export default new Elysia().use(createContext).use(dashboard).use(auth);

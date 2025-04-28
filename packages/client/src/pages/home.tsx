@@ -1,7 +1,7 @@
+import { Github } from 'lucide-react';
 import { toast } from 'sonner';
 import { useTheme } from '../components/hooks/useTheme';
 import { useBackend } from '../components/lib/BackendProvider';
-import { Github } from 'lucide-react';
 
 export default function Home() {
   const { theme, setTheme } = useTheme();

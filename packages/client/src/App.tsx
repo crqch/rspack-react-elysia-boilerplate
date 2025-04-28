@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 import './App.css';
-import { createTheme, ThemeContext } from './components/hooks/useTheme';
+import { ThemeContext, createTheme } from './components/hooks/useTheme';
 import { Toaster } from './components/sonner';
 import Home from './pages/home';
 import NotFound from './pages/notfound';

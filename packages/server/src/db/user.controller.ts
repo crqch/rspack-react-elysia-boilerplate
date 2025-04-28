@@ -1,11 +1,11 @@
-import { db } from "./index"
-import { type User } from "@prisma/client"
+import type { User } from '@prisma/client';
+import { db } from './index';
 
 export class UserInstance {
-  public data: User
+  public data: User;
 
   constructor(data: User) {
-    this.data = data
+    this.data = data;
   }
 
   async save() {
@@ -14,7 +14,7 @@ export class UserInstance {
       data: {
         ...this.data,
       },
-    })
+    });
   }
 
   getNonSensitiveData() {
@@ -23,7 +23,7 @@ export class UserInstance {
       ranks: this.data.ranks,
       preferredLanguage: this.data.preferredLanguage,
       id: this.data.id,
-    }
+    };
   }
 
   moderation() {
@@ -31,32 +31,32 @@ export class UserInstance {
       ban() {},
       tempban() {},
       ipban() {},
-    }
+    };
   }
 
   authorization() {
-    const u = this
+    const u = this;
     return {
       generateRefreshToken() {
-        return auth.generateRefreshToken(u.data)
+        return auth.generateRefreshToken(u.data);
       },
       getAccessToken(rfToken: string) {
-        return auth.getAccessToken(u.data, rfToken)
+        return auth.getAccessToken(u.data, rfToken);
       },
       async invalidateRfToken(rfToken: string) {
         const token = await db.refreshToken.findUnique({
           where: {
             token: rfToken,
           },
-        })
-        if (!token) return
-        if (token.userId !== u.data.id) return
+        });
+        if (!token) return;
+        if (token.userId !== u.data.id) return;
         await db.refreshToken.delete({
           where: {
             id: token.id,
           },
-        })
+        });
       },
-    }
+    };
   }
 }

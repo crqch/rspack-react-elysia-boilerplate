@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import type { App } from 'shared/eden';
 import { treaty } from '@elysiajs/eden';
 import Cookies from 'js-cookie';
 import { getBaseUrl } from 'shared';
 import type { User } from 'shared';
+import type { App } from 'shared/eden';
 const ACCESS_TOKEN_COOKIE = 'access_token';
 const REFRESH_TOKEN_COOKIE = 'refresh_token';
 const UUID_COOKIE = 'uuid';

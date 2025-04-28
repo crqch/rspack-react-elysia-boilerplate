@@ -20,12 +20,11 @@
     "prisma:generate": "cd packages/server && bun prisma generate",
     "prisma:migrate": "cd packages/server && bun prisma migrate dev",
     "prisma:studio": "cd packages/server && bun prisma studio",
-    "prisma:migrate:prod": "cd packages/server && dotenv -e .env.prod -- bun prisma migrate deploy"
+    "prisma:migrate:prod": "cd packages/server && dotenv -e .env.prod -- bun prisma migrate deploy",
+    "formatbiome": "bunx biome check --write ."
   },
   "type": "module",
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "dependencies": {
     "vite-plugin-checker": "^0.9.0"
   }
