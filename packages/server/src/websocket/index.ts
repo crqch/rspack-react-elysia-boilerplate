@@ -9,7 +9,12 @@ export interface WebsocketRoute {
   name: string;
   callback: (
     ws: WSInstance<User>,
-    message: any,
+    message: {
+      type: string;
+      data: {
+        [key: string]: string;
+      };
+    },
   ) =>
     | Promise<void>
     | WebsocketMessage
@@ -41,7 +46,7 @@ export function newWebsocket() {
 
   const callbackMap = {};
   const userUpdatedCallback: {
-    [key: string]: () => {};
+    [key: string]: () => void;
   } = {};
 
   const routes: WebsocketRoute[] = [];
@@ -49,8 +54,8 @@ export function newWebsocket() {
   const handle = new Elysia().ws('/', {
     //@ts-ignore
     async open(ws) {
-      if (!ws.data.query['a']) return ws.close();
-      const [agent, token] = ws.data.query['a']?.split('!');
+      if (!ws.data.query.a) return ws.close();
+      const [agent, token] = ws.data.query.a.split('!');
       if (!agent || !token) return ws.close();
       if (
         !ws.data.headers['cf-connecting-ip'] &&
@@ -79,13 +84,16 @@ export function newWebsocket() {
     },
     async message(ws, _message) {
       if (_message === 'p') return;
-      const message = _message as any;
+      const message = _message as {
+        type: string;
+        data: { [key: string]: string };
+      };
 
       const paths = message.type.split('/');
       let route: WebsocketRoute[] | WebsocketRoute = routes;
       let index = 0;
       const findRoute = () => {
-        if (!(route instanceof Array)) return;
+        if (!Array.isArray(route)) return;
         route.find((r) => {
           if (r.name === paths[index]) {
             if (r.name !== paths[paths.length - 1]) {
@@ -114,8 +122,10 @@ export function newWebsocket() {
       route = route as WebsocketRoute;
       //@ts-ignore
       const response = await route.callback(connections.get(ws.id), message);
-      if (response instanceof Array) {
-        response.forEach((r) => ws.send(JSON.stringify(r)));
+      if (Array.isArray(response)) {
+        for (const r in response) {
+          ws.send(JSON.stringify(r));
+        }
       } else if (response) {
         ws.send(JSON.stringify(response));
       }

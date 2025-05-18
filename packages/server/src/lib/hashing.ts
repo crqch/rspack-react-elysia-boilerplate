@@ -1,4 +1,4 @@
-import { createHash } from 'crypto';
+import { createHash } from 'node:crypto';
 import cuid2 from '@paralleldrive/cuid2';
 
 const hashing = {
@@ -16,7 +16,7 @@ const hashing = {
     const secondPartLength = Math.floor(Math.random() * 10) + 20;
     let secondPart = await hashing.sha256(username + new Date().getTime() + id);
     secondPart = secondPart.substring(0, secondPartLength);
-    return firstPart + '.' + secondPart;
+    return `${firstPart}.${secondPart}`;
   },
 };
 
